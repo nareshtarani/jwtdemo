@@ -1,6 +1,7 @@
 package org.jwtdemo.security.service;
 
 import org.jwtdemo.model.security.User;
+import org.jwtdemo.security.JwtUser;
 import org.jwtdemo.security.JwtUserFactory;
 import org.jwtdemo.security.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,4 +26,9 @@ public class JwtUserDetailsService implements UserDetailsService {
             return JwtUserFactory.create(user);
         }
     }
+    
+    public void saveUser(User user) {
+    	userRepository.save(user);
+    }
+    
 }
