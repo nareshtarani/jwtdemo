@@ -30,5 +30,9 @@ public class JwtUserDetailsService implements UserDetailsService {
     public void saveUser(User user) {
     	userRepository.save(user);
     }
+
+    public User getUser(String username) {
+    	return userRepository.findByUsername(username);
+    }
     
 }

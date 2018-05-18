@@ -12,9 +12,11 @@ import org.jwtdemo.model.security.User;
 import org.jwtdemo.security.JwtTokenUtil;
 import org.jwtdemo.security.JwtUser;
 import org.jwtdemo.security.service.JwtUserDetailsService;
+import org.jwtdemo.security.service.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,7 +39,7 @@ public class UserRestController {
 
 	private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-	@RequestMapping(value = "user", method = RequestMethod.GET)
+	@RequestMapping(value = "user", method = RequestMethod.GET,produces = "application/json")
 	public JwtUser getAuthenticatedUser(HttpServletRequest request) {
 		String token = request.getHeader(tokenHeader).substring(7);
 		String username = jwtTokenUtil.getUsernameFromToken(token);
@@ -45,8 +47,8 @@ public class UserRestController {
 		return user;
 	}
 
-	@RequestMapping(value = "${jwt.route.authentication.path}/create", method = RequestMethod.POST)
-	public ResponseEntity<String> saveUser(@RequestBody User user) {
+	@RequestMapping(value = "${jwt.route.authentication.path}/create", method = RequestMethod.POST,produces = "application/json")
+	public RestResponse saveUser(@RequestBody User user) {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		Authority authority = new Authority();
 		authority.setId(1L);
@@ -55,7 +57,7 @@ public class UserRestController {
 		user.setAuthorities(authorities);
 		user.setLastPasswordResetDate(new Date());
 		userDetailsService.saveUser(user);
-		return ResponseEntity.ok().body("Done");
+		return new RestResponse("User Added");
 	}
 
 }

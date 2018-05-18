@@ -18,12 +18,12 @@ public class PersonRestService {
         persons.add(new Person("Foo", "Bar"));
     }
 
-    @RequestMapping(path = "/persons", method = RequestMethod.GET)
+    @RequestMapping(path = "/persons", method = RequestMethod.GET,produces = "application/json")
     public static List<Person> getPersons() {
         return persons;
     }
 
-    @RequestMapping(path = "/persons/{name}", method = RequestMethod.GET)
+    @RequestMapping(path = "/persons/{name}", method = RequestMethod.GET,produces = "application/json")
     public static Person getPerson(@PathVariable("name") String name) {
         return persons.stream()
                 .filter(person -> name.equalsIgnoreCase(person.getName()))
